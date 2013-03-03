@@ -31,6 +31,8 @@ app = webapp2.WSGIApplication([
 ('/configitem/', configmanager.handlers.MainPage),
 ('/api/headline/add/', headline.handlersapi.HeadlineAddRequest),
 ('/headline/add/', headline.handlersapi.HeadlineAddResponse),
+('/api/headline/archive/', headline.handlersapi.ArchiveRequest),
+('/headline/archive/', headline.handlersapi.ArchiveResponse),
 ('/l/', headline.handlers.IndexPage),
 ],
 debug=True, config=config)
