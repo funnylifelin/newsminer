@@ -1,8 +1,4 @@
-import copy
-import datetime
 
-
-from commonutil import dateutil
 import configmanager.models
 from configmanager import cmapi
 
@@ -28,17 +24,29 @@ def saveDatasourceHistory(datasourceHistory):
     cmapi.saveItem(key, datasourceHistory, modelname=DatasourceHistory)
 
 def saveDatasource(datasource, items):
-    data = copy.deepcopy(datasource)
-    data['pages'] = copy.deepcopy(items)
-
     key = _getDatasourceHistoryKey()
     latestItems = getDatasourceHistory()
-    latestItems.insert(0, data)
+    for item in items:
+        found = False
+        if 'url' not in item:
+            continue
+        for childItem in latestItems:
+            if childItem['url'] == item['url']:
+                found = True
+                break
+        if not found:
+            item['source'] = datasource
+            latestItems.insert(0, item)
     cmapi.saveItem(key, latestItems, modelname=DatasourceHistory)
 
 def getArchiveConfig():
     return cmapi.getItemValue('archive', {})
 
 def archiveData(key, datasources):
-    cmapi.saveItem(key, datasources, modelname=DatasourceArchive)
+    oldValue = cmapi.getItemValue(key, [], modelname=DatasourceArchive)
+    if oldValue:
+        oldValue.extend(datasources)
+    else:
+        oldValue = datasources
+    cmapi.saveItem(key, oldValue, modelname=DatasourceArchive)
 
