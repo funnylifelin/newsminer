@@ -24,19 +24,25 @@ def saveDatasourceHistory(datasourceHistory):
     cmapi.saveItem(key, datasourceHistory, modelname=DatasourceHistory)
 
 def saveDatasource(datasource, items):
+    # charts refresh operation does not need archive.
+    if 'refreshing' in datasource:
+        return
+
+    sourceadded = datasource.get('added')
+    if not sourceadded:
+        return
     key = _getDatasourceHistoryKey()
     latestItems = getDatasourceHistory()
     for item in items:
-        found = False
-        if 'url' not in item:
+        # An item only need archive the first time it appears.
+        itemadded = item.get('added')
+        if not itemadded:
             continue
-        for childItem in latestItems:
-            if childItem['url'] == item['url']:
-                found = True
-                break
-        if not found:
-            item['source'] = datasource
-            latestItems.insert(0, item)
+        if itemadded < sourceadded:
+            continue
+
+        item['source'] = datasource
+        latestItems.insert(0, item)
     cmapi.saveItem(key, latestItems, modelname=DatasourceHistory)
 
 def getArchiveConfig():
