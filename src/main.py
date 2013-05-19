@@ -6,7 +6,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'library'))
 
 import templateutil.filters
 
-import configmanager.handlers
 import headline.handlersapi
 import headline.handlers
 
@@ -28,7 +27,6 @@ config['webapp2_extras.jinja2'] = {
 
 app = webapp2.WSGIApplication([
 ('/', MainPage),
-('/configitem/', configmanager.handlers.MainPage),
 ('/api/headline/add/', headline.handlersapi.HeadlineAddRequest),
 ('/headline/add/', headline.handlersapi.HeadlineAddResponse),
 ('/api/headline/archive/', headline.handlersapi.ArchiveRequest),
