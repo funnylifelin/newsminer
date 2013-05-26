@@ -94,3 +94,13 @@ def archiveData(key, datasources):
         oldValue = datasources
     cmapi.saveItem(key, oldValue, modelname=DatasourceArchive)
 
+def getPages(datasources=None, keyname=None):
+    if keyname:
+        datasources = cmapi.getItemValue(keyname, [], modelname=LatestItem)
+    pages = []
+    for datasource in datasources:
+        for childPage in datasource['pages']:
+            childPage['source'] = datasource['source']
+            pages.append(childPage)
+    return pages
+

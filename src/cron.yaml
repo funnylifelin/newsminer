@@ -3,4 +3,7 @@ cron:
   url: /api/headline/archive/
   schedule: every day 00:00
   timezone: America/Dawson
+- description: Send requests to calculate hot words.
+  url: /miner/words/
+  schedule: every 5 minutes synchronized
 
