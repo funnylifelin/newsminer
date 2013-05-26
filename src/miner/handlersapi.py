@@ -13,7 +13,7 @@ class HeadlineAddRequest(webapp2.RequestHandler):
 
     def post(self):
         rawdata = self.request.body
-        taskqueue.add(queue_name="default", payload=rawdata, url='/headline/add/')
+        taskqueue.add(queue_name="default", payload=rawdata, url='/miner/add/')
         self.response.headers['Content-Type'] = 'text/plain'
         self.response.out.write('Request is accepted.')
 
@@ -39,7 +39,7 @@ class HeadlineAddResponse(webapp2.RequestHandler):
 class ArchiveRequest(webapp2.RequestHandler):
 
     def get(self):
-        taskqueue.add(queue_name="default", url='/headline/archive/')
+        taskqueue.add(queue_name="default", url='/miner/archive/')
         self.response.headers['Content-Type'] = 'text/plain'
         self.response.out.write('Request is accepted.')
 

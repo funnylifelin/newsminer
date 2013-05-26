@@ -3,7 +3,7 @@ import os
 import webapp2
 from webapp2_extras import jinja2
 
-from . import hlapi
+from . import models
 
 class IndexPage(webapp2.RequestHandler):
 
@@ -17,7 +17,7 @@ class IndexPage(webapp2.RequestHandler):
         self.response.out.write(content)
 
     def get(self):
-        datasources = hlapi.getDatasourceHistory()
+        datasources = models.getDatasourceHistory()[:100]
         templateValues = {
             'datasources': datasources,
         }

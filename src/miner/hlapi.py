@@ -2,25 +2,13 @@ import datetime
 import logging
 
 from commonutil import dateutil
-import globalconfig
-from . import modelapi
+from . import models
 
 def saveItems(datasource, items):
-    modelapi.saveDatasource(datasource, items)
-
-def getDatasourceHistory():
-    latestHours = globalconfig.getSiteLatestHours()
-    startTime = datetime.datetime.utcnow() - datetime.timedelta(hours=latestHours)
-    strstart = dateutil.getDateAs14(startTime)
-    datasources = modelapi.getDatasourceHistory()
-    result = [ item for item in datasources
-                if item.get('added', '') >= strstart]
-    if not result:
-        result = datasources[:100]
-    return result
+    models.saveDatasource(datasource, items)
 
 def archiveData():
-    config = modelapi.getArchiveConfig()
+    config = models.getArchiveConfig()
     timezone = config.get('tiemzone', 0)
     nnow = datetime.datetime.utcnow()
     lend = datetime.datetime(nnow.year, nnow.month, nnow.day, 23, 59, 0)
@@ -29,7 +17,7 @@ def archiveData():
         lend -= datetime.timedelta(days=1)
         nend -= datetime.timedelta(days=1)
     topnend = nend
-    datasources = modelapi.getDatasourceHistory()
+    datasources = models.getDatasourceHistory()
     leftSources = datasources
     while True:
         strend = dateutil.getDateAs14(nend)
@@ -42,11 +30,11 @@ def archiveData():
         matchedSources = [item for item in leftSources
                     if 'added' in item and item['added'] > strend2]
         if matchedSources:
-            modelapi.archiveData(lend.strftime('%Y%m%d'), matchedSources)
+            models.archiveData(lend.strftime('%Y%m%d'), matchedSources)
         lend -= datetime.timedelta(days=1)
         nend -= datetime.timedelta(days=1)
     strtopend = dateutil.getDateAs14(topnend)
     datasources = [item for item in datasources
                     if 'added' in item and item['added'] > strtopend]
-    modelapi.saveDatasourceHistory(datasources)
+    models.saveDatasourceHistory(datasources)
 

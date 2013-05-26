@@ -6,8 +6,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'library'))
 
 import templateutil.filters
 
-import headline.handlersapi
-import headline.handlers
+import miner.handlersapi
+import miner.handlers
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -16,7 +16,7 @@ class MainPage(webapp2.RequestHandler):
 
 config = {}
 config['webapp2_extras.jinja2'] = {
-    'template_path': os.path.join(os.path.dirname(__file__), 'headline', 'templates'),
+    'template_path': os.path.join(os.path.dirname(__file__), 'miner', 'templates'),
     'filters': {
         'utc14duration': templateutil.filters.utc14duration
     },
@@ -27,11 +27,11 @@ config['webapp2_extras.jinja2'] = {
 
 app = webapp2.WSGIApplication([
 ('/', MainPage),
-('/api/headline/add/', headline.handlersapi.HeadlineAddRequest),
-('/headline/add/', headline.handlersapi.HeadlineAddResponse),
-('/api/headline/archive/', headline.handlersapi.ArchiveRequest),
-('/headline/archive/', headline.handlersapi.ArchiveResponse),
-('/l/', headline.handlers.IndexPage),
+('/api/miner/add/', miner.handlersapi.HeadlineAddRequest),
+('/miner/add/', miner.handlersapi.HeadlineAddResponse),
+('/api/miner/archive/', miner.handlersapi.ArchiveRequest),
+('/miner/archive/', miner.handlersapi.ArchiveResponse),
+('/miner/l/', miner.handlers.IndexPage),
 ],
 debug=True, config=config)
 
