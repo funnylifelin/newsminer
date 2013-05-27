@@ -67,6 +67,12 @@ def _getWordsServerUrl(timezone):
     return None
 
 class CalculateWords(webapp2.RequestHandler):
+    def get(self):
+        taskqueue.add(queue_name='default', url='/miner/words/response/')
+        self.response.headers['Content-Type'] = 'text/plain'
+        self.response.out.write('Words calculation is started.')
+
+class CalculateWordsResponse(webapp2.RequestHandler):
 
     def post(self):
         self.response.headers['Content-Type'] = 'text/plain'

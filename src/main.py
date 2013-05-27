@@ -32,6 +32,7 @@ app = webapp2.WSGIApplication([
 ('/api/miner/archive/', miner.handlersapi.ArchiveRequest),
 ('/miner/archive/', miner.handlersapi.ArchiveResponse),
 ('/miner/words/', miner.handlersapi.CalculateWords),
+('/miner/words/response/', miner.handlersapi.CalculateWordsResponse),
 ('/miner/l/', miner.handlers.IndexPage),
 ],
 debug=True, config=config)

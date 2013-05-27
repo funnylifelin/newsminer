@@ -1,5 +1,6 @@
 import datetime
 import logging
+import random
 import time
 
 from commonutil import collectionutil, dateutil, networkutil
@@ -68,6 +69,9 @@ def _sendHotWordsRequest(serverUrl, masterUrls, masterKeyname, pages):
         'key': masterKeyname,
         'titles': titles,
     }
+    # sleep random duration,
+    # so avoid the trend server receives a lot of requests at the same time.
+    time.sleep(_REQUEST_INTERVAL + random.randint(0, _REQUEST_INTERVAL))
     success = networkutil.postData(serverUrl, data, tag=masterKeyname,
                 trycount=_CALLBACK_TRYCOUNT, timeout=_URL_TIMEOUT)
     if success:
@@ -81,7 +85,6 @@ def calculateHotWords(wordsServerUrl, masterUrls, channels):
     _sendHotWordsRequest(wordsServerUrl, masterUrls, 'sites', sitePages)
 
     chartsPages = models.getPages(keyname='chartses')
-    time.sleep(_REQUEST_INTERVAL)
     _sendHotWordsRequest(wordsServerUrl, masterUrls, 'chartses', chartsPages)
 
     channelsWords = {}
@@ -95,6 +98,5 @@ def calculateHotWords(wordsServerUrl, masterUrls, channels):
         channelPages = getPagesByTags(sitePages, tags)
         if not channelPages:
             continue
-        time.sleep(_REQUEST_INTERVAL)
         _sendHotWordsRequest(wordsServerUrl, masterUrls, slug, channelPages)
 
