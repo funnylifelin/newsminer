@@ -35,5 +35,5 @@ app = webapp2.WSGIApplication([
 ('/miner/words/response/', miner.handlersapi.CalculateWordsResponse),
 ('/miner/l/', miner.handlers.IndexPage),
 ],
-debug=True, config=config)
+debug=os.environ['SERVER_SOFTWARE'].startswith('Dev'), config=config)
 
