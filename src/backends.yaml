@@ -1,0 +1,4 @@
+backends:
+- name: archive
+  options: dynamic
+

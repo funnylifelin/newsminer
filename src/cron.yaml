@@ -1,6 +1,6 @@
 cron:
 - description: archive data everyday
-  url: /api/headline/archive/
+  url: /api/miner/archive/
   schedule: every day 00:00
   timezone: America/Dawson
 - description: Send requests to calculate hot words.
